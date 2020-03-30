@@ -21,6 +21,14 @@ const Main = () => {
     //     console.log('아이디는?', id);
     //     Router.push('/movie');
     // }, []);
+//     const Background = styled.div`
+//     background-size: cover;
+//     background-position: center center;
+//     background-repeat: no-repeat,
+//     height: 400px;
+//     width: 100%;
+//     opacity : 0.7;
+// `;
 
     return (
         <>  

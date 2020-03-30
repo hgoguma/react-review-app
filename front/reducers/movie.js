@@ -4,6 +4,7 @@ export const initialState = {
     isLoaded : false,
     loadingError : '',
     data : [],
+    genres : [],
 };
 
 export const LOAD_MAIN_MOVIE_REQUEST = 'LOAD_MAIN_MOVIE_REQUEST';
@@ -50,6 +51,7 @@ const reducer = (state = initialState, action) => {
                 isLoaded : true,
                 isLoading : false,
                 data : action.data,
+                genres : action.data.genres.length > 1 ? action.data.genres : action.data.genres[0],
             }
 
         }
