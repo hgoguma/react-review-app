@@ -1,9 +1,3 @@
-const dummyUser = {
-    nickname : '알파카',
-    email : 'hgoguma@gmail.com',
-    id : 1
-}
-
 export const initialState = {
     isLoggingOut : false, // 로그아웃 시도중
     isLoggedOut : false,
@@ -41,7 +35,6 @@ const reducer = (state = initialState, action) => {
         case LOG_IN_REQUEST : {
             return {
               ...state,
-              isLoggedIn : false,
             };
         }
         case LOG_IN_SUCCESS : {

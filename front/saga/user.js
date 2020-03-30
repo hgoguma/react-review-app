@@ -82,5 +82,5 @@ export default function* userSaga() {
         fork(watchLogin),
         fork(watchSignUp),
         fork(watchCheckEmail),
-    ])
+    ]);
 }

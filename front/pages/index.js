@@ -1,9 +1,21 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Row, Col, Input, Card, Avatar } from 'antd';
+import { useDispatch } from 'react-redux';
+import { LOAD_REVIEW_REQUEST } from '../reducers/review';
 import { HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import ReviewForm from '../component/ReviewForm';
 
 const Main = () => {
+    const disaptch = useDispatch();
+
+    //리뷰 가져오기
+    // useEffect(() => {
+    //     disaptch({
+    //         type : LOAD_REVIEW_REQUEST,
+    //     });
+    // }, [])
+
+
     return (
         <Row gutter={16} style={{marginTop:30}}>
             <Col span={8} >
