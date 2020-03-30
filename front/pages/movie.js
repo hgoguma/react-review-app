@@ -1,18 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Card, Row, Col } from 'antd';
+import { Card, Row, Col } from 'antd';
 import styled from 'styled-components';
 import { LOAD_MAIN_MOVIE_REQUEST } from '../reducers/movie';
 
-const imagePath = "https://1ryzas42x65e2oosia40bgli-wpengine.netdna-ssl.com/wp-content/uploads/2020/01/WBB-site-image-838x400.jpg";
-
-
-const MoreBtn = styled(Button)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-`;
 
 const movie = () => {
 
@@ -32,6 +23,7 @@ const movie = () => {
         <>  
         <div>
             <h1 style={{textAlign:'center'}}>트렌드 영화</h1>
+            <h3></h3>
         </div>
             <Row gutter={{ xs: 8, sm: 16, md: 24}} justify='center' style={{marginTop:'20px'}} around="xs">
                     {data.map(v => (
