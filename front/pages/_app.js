@@ -1,16 +1,15 @@
 import React from 'react';
 import AppLayout from '../component/AppLayout';
 import Head from 'next/head';
-
 import withRedux from 'next-redux-wrapper';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import PropTypes from 'prop-types';
 import reducer from '../reducers';
 import rootSaga from '../saga';
 
-
-const movieApp = ({Component, store }) => {
+const MovieApp = ({ Component, store }) => {
     return (
         <Provider store={store}>
             <Head>
@@ -24,6 +23,20 @@ const movieApp = ({Component, store }) => {
         </Provider>
         )
 }
+
+MovieApp.propTypes = {
+    Component: PropTypes.elementType.isRequired,
+    store: PropTypes.object.isRequired,
+}
+
+MovieApp.getInitialProps = async (context) => {
+    const { ctx } = context;
+    let pageProps = {};
+    if(context.Component.getInitialProps) {
+        pageProps = await context.Component.getInitialProps(ctx);
+    }
+    return { pageProps };
+};
 
 const configureStore = (initialState, options) => {
     const sagaMiddleware = createSagaMiddleware();
@@ -40,4 +53,4 @@ const configureStore = (initialState, options) => {
 };
   
 
-export default withRedux(configureStore)(movieApp); //컴포넌트를 감싸주면 고차 컴포넌트
+export default withRedux(configureStore)(MovieApp); //컴포넌트를 감싸주면 고차 컴포넌트

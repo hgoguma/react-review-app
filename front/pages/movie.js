@@ -1,50 +1,39 @@
-import React, { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Card, Row, Col } from 'antd';
-import styled from 'styled-components';
-import { LOAD_MAIN_MOVIE_REQUEST } from '../reducers/movie';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { LOAD_MOVIE_REQUEST } from '../reducers/movie';
 
+const Movie = ({id}) => {
 
-const movie = () => {
-
-    const dispatch = useDispatch();
     const { data } = useSelector(state => state.movie);
-    useEffect(() => {
-        dispatch({
-            type : LOAD_MAIN_MOVIE_REQUEST,
-        });
-    }, []);
-
-    const onClickMovie = useCallback(id => () => {
-        console.log('아이디는?', id);
-    }, []);
 
     return (
-        <>  
         <div>
-            <h1 style={{textAlign:'center'}}>트렌드 영화</h1>
-            <h3></h3>
+            {/* <span>장르 : {data.genres.map(v => (
+                <span>{v.name} || </span>
+            ))}</span> */}
+            <p>{data.overview}</p>
+            <p>{data.release_date}</p>
+            <p>{data.title}</p>
+            <p>{data.tagline}</p>
+            <p>{data.vote_average}</p>
+            <p>{data.backdrop_path}</p>
+
         </div>
-            <Row gutter={{ xs: 8, sm: 16, md: 24}} justify='center' style={{marginTop:'20px'}} around="xs">
-                    {data.map(v => (
-                        <Col xs={24} md={6}>
-                        <Card
-                            key={v.id}
-                            hoverable
-                            style={{ width: 320, margin:'20px'}}
-                            cover={<img alt={v.title} src={`https://image.tmdb.org/t/p/w500/${v.backdrop_path}`} />}
-                            onClick={onClickMovie(v.id)}
-                        >
-                            <Card.Meta 
-                                style={{ textAlign:'center'}}
-                                title={v.title} 
-                                description={`평점 : ${v.vote_average}`} />
-                        </Card>
-                        </Col>
-                    ))}
-            </Row>
-        </>
     )
 }
 
-export default movie;
+Movie.getInitialProps = async (context) => {
+    //console.log('무비 getInitialProps', context.query.id);
+    context.store.dispatch({
+        type: LOAD_MOVIE_REQUEST,
+        data: context.query.id,
+    });
+    return { id : parseInt(context.query.id, 10) }
+};
+
+Movie.propTypes = {
+    id: PropTypes.number.isRequired,
+}
+
+export default Movie;

@@ -1,49 +1,56 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Row, Col, Input, Card, Avatar } from 'antd';
-import { useDispatch } from 'react-redux';
-import { LOAD_REVIEW_REQUEST } from '../reducers/review';
-import { HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
-import ReviewForm from '../component/ReviewForm';
+import React, { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Router from 'next/router';
+import Link from 'next/link';
+import { Card, Row, Col } from 'antd';
+import styled from 'styled-components';
+import { LOAD_MAIN_MOVIE_REQUEST } from '../reducers/movie';
+
 
 const Main = () => {
-    const disaptch = useDispatch();
 
-    //리뷰 가져오기
-    // useEffect(() => {
-    //     disaptch({
-    //         type : LOAD_REVIEW_REQUEST,
-    //     });
-    // }, [])
+    const dispatch = useDispatch();
+    const { data } = useSelector(state => state.movie);
+    useEffect(() => {
+        dispatch({
+            type : LOAD_MAIN_MOVIE_REQUEST,
+        });
+    }, []);
 
+    // const onClickMovie = useCallback(id => () => {
+    //     console.log('아이디는?', id);
+    //     Router.push('/movie');
+    // }, []);
 
     return (
-        <Row gutter={16} style={{marginTop:30}}>
-            <Col span={8} >
-                리뷰 남기기
-                <ReviewForm />
-            </Col>
-            <Col span={8}>
-                <Input.Search size="middle" placeholder="검색하세요" />
-                <Card style={{marginTop:30}}
-                    key="key"
-                    cover=""
-                    actions={[
-                    <HeartOutlined />,
-                    <MessageOutlined />,
-                    <EllipsisOutlined />
-                    ]}
-                    title="제목"
-                >
-                    <Card.Meta
-                    title="날짜"
-                    description="내용"
-                    />
-                </Card>
-            </Col>
-            <Col span={8} />
-        </Row>
+        <>  
+        <div style={{textAlign:'center', marginTop:'10px'}}>
+            <h1>트렌드 영화</h1>
+            <h3>지난 일주일간 트렌드에 오른 영화를 확인해보세요</h3>
+        </div>
+            <Row gutter={{ xs: 8, sm: 16, md: 24}} justify='center' style={{marginTop:'20px'}} around="xs">
+                    {data.map(v => (
+                        <Col xs={24} md={6}>
+                        <Link href={{pathname: '/movie', query: { id : v.id }}} as={`/movie/${v.id}`} key={v.id}>
+                        <a>
+                            <Card
+                                key={v.id}
+                                hoverable
+                                style={{ width: 320, margin:'20px'}}
+                                cover={<img alt={v.title} src={`https://image.tmdb.org/t/p/w500/${v.backdrop_path}`} />}
+                            >
+                                <Card.Meta 
+                                    style={{ textAlign:'center'}}
+                                    title={v.title} 
+                                    description={`평점 : ${v.vote_average}`} />
+                            </Card>
+                        </a>
+                        </Link>
+                        </Col>
+                    ))}
+            </Row>
+        </>
     )
-    
 }
 
 export default Main;
