@@ -1,6 +1,9 @@
 import { all, fork, call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { LOAD_MAIN_MOVIE_REQUEST, LOAD_MAIN_MOVIE_SUCCESS, LOAD_MAIN_MOVIE_FAILURE, LOAD_MOVIE_SUCCESS, LOAD_MOVIE_FAILURE, LOAD_MOVIE_REQUEST } from '../reducers/movie';
+import { LOAD_MAIN_MOVIE_REQUEST, LOAD_MAIN_MOVIE_SUCCESS, LOAD_MAIN_MOVIE_FAILURE, 
+    LOAD_MOVIE_REQUEST, LOAD_MOVIE_SUCCESS, LOAD_MOVIE_FAILURE, 
+    LOAD_MOVIE_CAST_REQUEST, LOAD_MOVIE_CAST_SUCCESS, LOAD_MOVIE_CAST_FAILURE
+} from '../reducers/movie';
 
 
 function loadMainMovieAPI() {
@@ -46,8 +49,33 @@ function* loadMovie(action) {
 }
 
 function* watchLoadMovie () {
-    yield takeLatest(LOAD_MOVIE_REQUEST, loadMovie)
+    yield takeLatest(LOAD_MOVIE_REQUEST, loadMovie);
+}
 
+//출연진 불러오기
+function loadMovieCastAPI(id) {
+    return axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=ko`, {});
+}
+
+function* loadMovieCast(action) {
+    try {
+        const result = yield call(loadMovieCastAPI, action.data);
+        console.log('출연진 불러오기!');
+        console.log(result);
+        yield put({
+            type : LOAD_MOVIE_CAST_SUCCESS,
+            data : result.data,
+        });
+    } catch(e) {
+        console.error(e);
+        yield put({
+            type : LOAD_MOVIE_CAST_FAILURE,
+        });
+    }
+}
+
+function* watchLoadMovieCast () {
+    yield takeLatest(LOAD_MOVIE_CAST_REQUEST, loadMovieCast);
 }
 
 
@@ -55,5 +83,6 @@ export default function* movieSaga() {
     yield all([
         fork(watchLoadMainMovie),
         fork(watchLoadMovie),
+        fork(watchLoadMovieCast),
     ])
 }
