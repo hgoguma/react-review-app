@@ -1,14 +1,18 @@
 
 export const initialState = {
-    isMovieLoading : false,
-    isMovieLoaded : false,
-    loadingMovieError : '',
-    isCastLoading : false,
-    isCastLoaded : false,
-    loadingCastError : '',
-    data : [],
-    genres : [],
-    cast : [],
+    isMovieLoading: false,
+    isMovieLoaded: false,
+    loadingMovieError: '',
+    isCastLoading: false,
+    isCastLoaded: false,
+    loadingCastError: '',
+    isSimilarLoading: false,
+    isSimilarLoaded: false,
+    loadingSimilarError: '',
+    data: [],
+    genres: [],
+    cast: [],
+    similar: [],
 };
 
 export const LOAD_MAIN_MOVIE_REQUEST = 'LOAD_MAIN_MOVIE_REQUEST';
@@ -22,6 +26,11 @@ export const LOAD_MOVIE_FAILURE = 'LOAD_MOVIE_FAILURE';
 export const LOAD_MOVIE_CAST_REQUEST = 'LOAD_MOVIE_CAST_REQUEST';
 export const LOAD_MOVIE_CAST_SUCCESS = 'LOAD_MOVIE_CAST_SUCCESS';
 export const LOAD_MOVIE_CAST_FAILURE = 'LOAD_MOVIE_CAST_FAILURE';
+
+export const LOAD_SIMILAR_MOVIE_REQUEST = 'LOAD_SIMILAR_MOVIE_REQUEST';
+export const LOAD_SIMILAR_MOVIE_SUCCESS = 'LOAD_SIMILAR_MOVIE_SUCCESS';
+export const LOAD_SIMILAR_MOVIE_FAILURE = 'LOAD_SIMILAR_MOVIE_FAILURE';
+
 
 
 const reducer = (state = initialState, action) => {
@@ -75,6 +84,29 @@ const reducer = (state = initialState, action) => {
                 isCastLoading : false,
                 isCastLoaded : false,
                 loadingCastError : action.error,
+            }
+        }
+        case LOAD_SIMILAR_MOVIE_REQUEST : {
+            return {
+                ...state,
+                isSimilarLoading: true,
+                isSimilarLoaded: false,
+            }
+        }
+        case LOAD_SIMILAR_MOVIE_SUCCESS : {
+            return {
+                ...state,
+                isSimilarLoading: false,
+                isSimilarLoaded: true,
+                similar : action.data,
+            }
+        }
+        case LOAD_SIMILAR_MOVIE_FAILURE : {
+            return {
+                ...state,
+                isSimilarLoading: true,
+                isSimilarLoaded: false,
+                loadingSimilarError: action.error,
             }
         }
         default : {
