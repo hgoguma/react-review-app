@@ -71,14 +71,14 @@ const Movie = ({id}) => {
             <Cast>
                 <h2>주요 출연진</h2>
                 <Row>
-                    { cast.cast && cast.cast.map((v , i) =>  {
+                    { cast.cast && cast.cast.map((v, i) =>  
                             (
                                 <>
                                 <Card
                                     key={v.id}
                                     hoverable
                                     style={{ width: 150, margin:'20px'}}
-                                    cover={<img alt={v.id} src={`https://image.tmdb.org/t/p/w500/${v.profile_path}`} />}
+                                    cover={<img alt={v.name} src={`https://image.tmdb.org/t/p/w500/${v.profile_path}`} />}
                                 >
                                     <Card.Meta 
                                         style={{ textAlign:'center'}}
@@ -87,33 +87,33 @@ const Movie = ({id}) => {
                                     />
                                 </Card>
                                 </>
-    
                             )
-                            
-                        }
-                        
                     ) }
                 </Row>
             </Cast>
             <div>
                 <h2>비슷한 영화</h2>
                 <Row>
-                    { similar.results && similar.results.map((v) =>  (
-                        <>
-                        <Card
-                            key={v.id}
-                            hoverable
-                            style={{ width: 150, margin:'20px'}}
-                            cover={<img alt={v.id} src={`https://image.tmdb.org/t/p/w500/${v.poster_path}`} />}
-                        >
-                            <Card.Meta 
-                                style={{ textAlign:'center'}}
-                                title={v.title}
-                                description={`평점 : ${v.vote_average}`}
-                            />
-                        </Card>
-                        </>
-                    )) }
+                    { similar.results && 
+                    similar.results.map((v, i) =>  
+                        (
+                            <>
+                            <Card
+                                key={v.id}
+                                hoverable
+                                style={{ width: 150, margin:'20px'}}
+                                cover={<img alt={v.title} src={`https://image.tmdb.org/t/p/w500/${v.poster_path}`} />}
+                            >
+                                <Card.Meta 
+                                    style={{ textAlign:'center'}}
+                                    title={v.title}
+                                    description={`평점 : ${v.vote_average}`}
+                                />
+                            </Card>
+                            </>
+                        ) 
+                        
+                    )}
                 </Row>
 
             </div>
@@ -122,7 +122,6 @@ const Movie = ({id}) => {
 }
 
 Movie.getInitialProps = async (context) => {
-    //console.log('무비 getInitialProps', context.query.id);
     context.store.dispatch({
         type: LOAD_MOVIE_REQUEST,
         data: context.query.id,
