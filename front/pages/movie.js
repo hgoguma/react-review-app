@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Row, Col, Card } from 'antd';
+import React from 'react';
+import { Row, Col, Card, List } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { LOAD_MOVIE_REQUEST, LOAD_MOVIE_CAST_REQUEST, LOAD_SIMILAR_MOVIE_REQUEST } from '../reducers/movie';
@@ -33,6 +33,10 @@ const Background = styled.div`
 `;
 
 const Cast = styled.div`
+    margin: 50px;
+`;
+
+const Similar = styled.div`
     margin: 50px;
 `;
 
@@ -71,52 +75,53 @@ const Movie = ({id}) => {
             <Cast>
                 <h2>주요 출연진</h2>
                 <Row>
-                    { cast.cast && cast.cast.map((v, i) =>  
-                            (
-                                <>
+                    <List
+                        dataSource={cast.cast}
+                        grid={{ gutter: 8, column: 6 }}
+                        renderItem={item => (
+                            <List.Item key={item.id}>
                                 <Card
-                                    key={v.id}
                                     hoverable
                                     style={{ width: 150, margin:'20px'}}
-                                    cover={<img alt={v.name} src={`https://image.tmdb.org/t/p/w500/${v.profile_path}`} />}
+                                    cover={<img alt={item.name} src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`} />}
                                 >
                                     <Card.Meta 
                                         style={{ textAlign:'center'}}
-                                        title={v.name}
-                                        description={v.character} 
+                                        title={item.name}
+                                        description={item.character} 
                                     />
                                 </Card>
-                                </>
-                            )
-                    ) }
+                            </List.Item>
+                        )}
+                    />
                 </Row>
             </Cast>
-            <div>
+            <Similar>
                 <h2>비슷한 영화</h2>
                 <Row>
-                    { similar.results && 
-                    similar.results.map((v, i) =>  
-                        (
-                            <>
-                            <Card
-                                key={v.id}
-                                hoverable
-                                style={{ width: 150, margin:'20px'}}
-                                cover={<img alt={v.title} src={`https://image.tmdb.org/t/p/w500/${v.poster_path}`} />}
-                            >
-                                <Card.Meta 
-                                    style={{ textAlign:'center'}}
-                                    title={v.title}
-                                    description={`평점 : ${v.vote_average}`}
-                                />
-                            </Card>
-                            </>
-                        ) 
-                        
-                    )}
+                    <List
+                        dataSource={similar.results}
+                        grid={{ gutter: 8, column: 6 }}
+                        renderItem ={ item => (
+                                <List.Item key={item.id}>
+                                    <Card
+                                        hoverable
+                                        style={{ width: '150px', margin:'20px'}}
+                                        cover={<img alt={item.title} src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} 
+                                                style={{ width: '100%', height: '100%' }} />}
+                                    >
+                                        <Card.Meta 
+                                            style={{ textAlign:'center'}}
+                                            title={item.title}
+                                            description={`평점 : ${item.vote_average}`}
+                                        />
+                                    </Card>
+                                </List.Item>
+                            )
+                        }
+                    />                    
                 </Row>
-
-            </div>
+            </Similar>
         </div>
     );
 }
