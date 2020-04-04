@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Input, Form, Button, Rate } from 'antd';
@@ -6,11 +6,19 @@ import { UPLOAD_REVIEW_REQUEST } from '../reducers/review';
 
 const ReviewForm = () => {
     const movie = useSelector(state => state.movie);
+    const { reviewAdded } = useSelector(state => state.review);
+
     const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [rating, setRating] = useState(3);
     const [content, setContent] = useState('');
+
+    useEffect(() => {
+        setTitle('');
+        setRating('');
+        setContent('');
+    }, [ reviewAdded === true ]);
 
 
     const onChangeTitle = useCallback((e) => {
@@ -39,6 +47,7 @@ const ReviewForm = () => {
                 content : content,
             }
         });
+
     }, [movie.data.id, title, rating, content]);
 
     return (

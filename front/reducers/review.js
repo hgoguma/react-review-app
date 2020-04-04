@@ -5,7 +5,7 @@ export const initialState = {
     hasMoreReviews : false,
     addReviewErrorReason: '', // 포스트 업로드 실패 사유
     isAddingReview: false, // 포스트 업로드 중
-    reviewsAdded: false, // 포스트 업로드 성공
+    reviewAdded: false, // 포스트 업로드 성공
     isAddingComment: false,
     addCommentErrorReason: '',
     commentAdded: false,
@@ -26,19 +26,19 @@ const reducer = (state = initialState, action) => {
         switch(action.type) {
             case UPLOAD_REVIEW_REQUEST : {
                 draft.isAddingReview = true;
-                draft.reviewsAdded = false;
+                draft.reviewAdded = false;
                 draft.addReviewErrorReason = '';
                 break;
             }
             case UPLOAD_REVIEW_SUCCESS : {
                 draft.isAddingReview = false;
-                draft.reviewsAdded = true;
+                draft.reviewAdded = true;
                 draft.reviews.unshift(action.data);
                 break;
             }
             case UPLOAD_REVIEW_FAILURE : {
                 draft.isAddingReview = false;
-                draft.reviewsAdded = false;
+                draft.reviewAdded = false;
                 draft.addReviewErrorReason = action.error;
                 break;
             }
