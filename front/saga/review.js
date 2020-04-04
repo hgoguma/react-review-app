@@ -4,13 +4,13 @@ import { UPLOAD_REVIEW_REQUEST, UPLOAD_REVIEW_SUCCESS, UPLOAD_REVIEW_FAILURE,
     LOAD_REVIEW_REQUEST, LOAD_REVIEW_SUCCESS, LOAD_REVIEW_FAILURE } from '../reducers/review';
 
 //후기 가져오기
-function loadReviewAPI() {
-    return axios.get('/review');
+function loadReviewAPI(movieId) {
+    return axios.get(`/review/${movieId}`);
 }
 
-function* loadReview() {
+function* loadReview(action) {
     try {
-        const result = yield call(loadReviewAPI);
+        const result = yield call(loadReviewAPI, action.data);
         yield put({
             type : LOAD_REVIEW_SUCCESS,
             data : result.data

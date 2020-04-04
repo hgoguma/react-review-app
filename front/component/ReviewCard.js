@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, Rate } from 'antd';
 import PropTypes from 'prop-types';
 import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -15,7 +15,10 @@ const ReviewCard = ( { review } ) => {
             <Card.Meta
             avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
             title={review.title}
-            description={<div>{review.content} || {review.createdAt} </div>}
+            description={<div> <p>{review.createdAt}</p> 
+            <p><Rate disabled defaultValue={review.rating} /> </p>
+            <p> {review.content} </p> 
+            </div> }
             />
         </Card>
     );

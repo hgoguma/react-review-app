@@ -135,6 +135,7 @@ Movie.getInitialProps = async (context) => {
     });
     context.store.dispatch({
         type: LOAD_REVIEW_REQUEST,
+        data: context.query.id,
     });
 
     return { id : parseInt(context.query.id, 10) }

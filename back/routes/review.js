@@ -5,10 +5,11 @@ const { isLoggedIn } = require('./middleware');
 
 
 //후기 가져오기
-router.get('/', async(req, res, next) => {
+router.get('/:movieId', async(req, res, next) => {
     try {
         const reviews = await db.Review.findAll({
-            order : [['createdAt', 'DESC']], //내림차순
+            where : { movieId : req.params.movieId},
+            order : [['createdAt', 'DESC']],
         });
         res.json(reviews);
     } catch(e) {
