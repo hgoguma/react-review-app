@@ -1,10 +1,14 @@
 import React from 'react';
-import { Row, Col, Card, List } from 'antd';
+import { Row, Col, Card, List, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { LOAD_MOVIE_REQUEST, LOAD_MOVIE_CAST_REQUEST, LOAD_SIMILAR_MOVIE_REQUEST } from '../reducers/movie';
 import styled from 'styled-components';
 
+
+const Container = styled.div`
+
+`;
 const Background = styled.div`
     height: 500px;
     position: relative;
@@ -40,12 +44,18 @@ const Similar = styled.div`
     margin: 50px;
 `;
 
+const Review = styled.div`
+    margin: 50px;
+`;
+
+
+
 const Movie = ({id}) => {
 
     const { data, cast, similar } = useSelector(state => state.movie);
 
     return (
-        <div>
+        <Container>
             <Background path={data.backdrop_path}>
                 <Row gutter={{ xs: 8, sm: 16, md: 24}}>
                     <Col xs={24} md={8}>
@@ -78,6 +88,7 @@ const Movie = ({id}) => {
                     <List
                         dataSource={cast.cast}
                         grid={{ gutter: 8, column: 6 }}
+                        // loadMore={<Button style={{width:'100%'}} >더 보기</Button>}
                         renderItem={item => (
                             <List.Item key={item.id}>
                                 <Card
@@ -122,7 +133,11 @@ const Movie = ({id}) => {
                     />                    
                 </Row>
             </Similar>
-        </div>
+            <Review>
+                <h2>후기</h2>
+                <Button>후기 작성</Button>
+            </Review>
+        </Container>
     );
 }
 

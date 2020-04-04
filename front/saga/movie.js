@@ -8,7 +8,7 @@ import { LOAD_MAIN_MOVIE_REQUEST, LOAD_MAIN_MOVIE_SUCCESS, LOAD_MAIN_MOVIE_FAILU
 
 
 function loadMainMovieAPI() {
-    return axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.REACT_APP_API_KEY}&language=ko`, {});
+    return axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${process.env.REACT_APP_API_KEY}&language=ko`, {});
 }
 
 function* loadMainMovie() {
@@ -85,8 +85,6 @@ function loadSimilarMovieAPI(id) {
 function* loadSimilarMovie(action) {
     try {
         const result = yield call(loadSimilarMovieAPI, action.data);
-        console.log('비슷한 영화 불러오기!');
-        console.log(result);
         yield put({
             type : LOAD_SIMILAR_MOVIE_SUCCESS,
             data : result.data,

@@ -1,3 +1,4 @@
+import produce from 'immer';
 
 export const initialState = {
     isMovieLoading: false,
@@ -10,7 +11,6 @@ export const initialState = {
     isSimilarLoaded: false,
     loadingSimilarError: '',
     data: [],
-    genres: [],
     cast: [],
     similar: [],
 };
@@ -34,89 +34,68 @@ export const LOAD_SIMILAR_MOVIE_FAILURE = 'LOAD_SIMILAR_MOVIE_FAILURE';
 
 
 const reducer = (state = initialState, action) => {
-    switch(action.type) {
-        case LOAD_MAIN_MOVIE_REQUEST :
-        case LOAD_MOVIE_REQUEST : {
-            return {
-                ...state,
-                isMovieLoading : true,
+    return produce(state, (draft) => {
+        switch(action.type) {
+            case LOAD_MAIN_MOVIE_REQUEST :
+            case LOAD_MOVIE_REQUEST : {
+                draft.isMovieLoading = true;
+                break;
+            }
+            case LOAD_MAIN_MOVIE_SUCCESS : 
+            case LOAD_MOVIE_SUCCESS : {
+                draft.isMovieLoading = false;
+                draft.isMovieLoaded = true,
+                draft.data = action.data;
+                break;
+            }
+            case LOAD_MAIN_MOVIE_FAILURE : 
+            case LOAD_MAIN_MOVIE_FAILURE : {
+                draft.isMovieLoading = false;
+                draft.isMovieLoaded = false,
+                draft.loadingMovieError = action.error;
+                break;
+            }
+            case LOAD_MOVIE_CAST_REQUEST : {
+                draft.isCastLoading = true;
+                draft.isCastLoaded = false;
+                break;
+            }
+            case LOAD_MOVIE_CAST_SUCCESS : {
+                draft.isCastLoading = false;
+                draft.isCastLoaded = true;
+                draft.cast = action.data;
+                break;
+            }
+            case LOAD_MOVIE_CAST_FAILURE : {
+                draft.isCastLoading = false;
+                draft.isCastLoaded = false;
+                draft.loadingCastError = action.error;
+                break;
+            }
+            case LOAD_SIMILAR_MOVIE_REQUEST : {
+                draft.isSimilarLoading = true;
+                draft.isSimilarLoaded = false;
+                break;
+            }
+            case LOAD_SIMILAR_MOVIE_SUCCESS : {
+                draft.isSimilarLoading = false;
+                draft.isSimilarLoaded = true;
+                draft.similar = action.data;
+                break;
+            }
+            case LOAD_SIMILAR_MOVIE_FAILURE : {
+                draft.isSimilarLoading = true;
+                draft.isSimilarLoaded = false;
+                draft.loadingSimilarError = action.error;
+                break;
+            }
+            default : {
+                return {
+                    ...state,
+                }
             }
         }
-        case LOAD_MAIN_MOVIE_SUCCESS : 
-        case LOAD_MOVIE_SUCCESS : {
-            return {
-                ...state,
-                isMovieLoading : false,
-                isMovieLoaded : true,
-                data : action.data,
-                genres : action.data.genres,
-            }
-
-        }
-        case LOAD_MAIN_MOVIE_FAILURE : 
-        case LOAD_MAIN_MOVIE_FAILURE : {
-            return {
-                ...state,
-                isMovieLoading : false,
-                isMovieLoaded : false,
-                loadingMovieError : action.error,
-            }
-
-        }
-        case LOAD_MOVIE_CAST_REQUEST : {
-            return {
-                ...state,
-                isCastLoading : true,
-                isCastLoaded : false,
-            }
-        }
-        case LOAD_MOVIE_CAST_SUCCESS : {
-            return {
-                ...state,
-                isCastLoading : false,
-                isCastLoaded : true,
-                cast : action.data,
-            }
-        }
-        case LOAD_MOVIE_CAST_FAILURE : {
-            return {
-                ...state,
-                isCastLoading : false,
-                isCastLoaded : false,
-                loadingCastError : action.error,
-            }
-        }
-        case LOAD_SIMILAR_MOVIE_REQUEST : {
-            return {
-                ...state,
-                isSimilarLoading: true,
-                isSimilarLoaded: false,
-            }
-        }
-        case LOAD_SIMILAR_MOVIE_SUCCESS : {
-            return {
-                ...state,
-                isSimilarLoading: false,
-                isSimilarLoaded: true,
-                similar : action.data,
-            }
-        }
-        case LOAD_SIMILAR_MOVIE_FAILURE : {
-            return {
-                ...state,
-                isSimilarLoading: true,
-                isSimilarLoaded: false,
-                loadingSimilarError: action.error,
-            }
-        }
-        default : {
-            return {
-                ...state,
-            }
-        }
-
-    }
-
+    });
 }
 
 export default reducer;
