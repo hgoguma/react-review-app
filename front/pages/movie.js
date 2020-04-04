@@ -110,9 +110,7 @@ const Movie = ({id}) => {
                     <Button onClick={onToggleReview}>후기 작성</Button>
                         { reviewFormOpen && 
                         (
-                            <div>
-                                <ReviewForm />
-                            </div>
+                            <ReviewForm />
                         )}
                     </Col>
                     <Col xs={24} md={4}></Col>                    
@@ -138,7 +136,6 @@ Movie.getInitialProps = async (context) => {
     context.store.dispatch({
         type: LOAD_REVIEW_REQUEST,
     });
-
 
     return { id : parseInt(context.query.id, 10) }
 };

@@ -1,20 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { Input, Form, Button, Rate, DatePicker } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Input, Form, Button, Rate } from 'antd';
 import { UPLOAD_REVIEW_REQUEST } from '../reducers/review';
 
 const ReviewForm = () => {
+    const movie = useSelector(state => state.movie);
     const dispatch = useDispatch();
 
-    const [dateTime, setDateTime] = useState('');
     const [title, setTitle] = useState('');
     const [rating, setRating] = useState(3);
     const [content, setContent] = useState('');
 
-    //DatePicker
-    const onChangeDateTime = useCallback((date, dateString) => {
-        setDateTime(dateString);
-    }, [dateTime]);
 
     const onChangeTitle = useCallback((e) => {
         setTitle(e.target.value);
@@ -36,22 +33,17 @@ const ReviewForm = () => {
         dispatch({
             type : UPLOAD_REVIEW_REQUEST,
             data : {
-                date : dateTime,
+                movieId : movie.data.id,
                 title : title,
                 rating : rating,
-                content : content
+                content : content,
             }
         });
-    }, [dateTime, title, rating, content]);
+    }, [movie.data.id, title, rating, content]);
 
     return (
         <>
         <Form style={{ margin: '10px 10px 20px' }} onSubmitCapture={onSubmit} >
-            <Form.Item required>
-            </Form.Item>
-            <Form.Item required>
-                <DatePicker placeholder="날짜" name="dateTime" onChange={onChangeDateTime} />
-            </Form.Item>
             <Form.Item required>
                 <Input placeholder="제목" name="title" value={title} onChange={onChangeTitle} />
             </Form.Item>
@@ -71,5 +63,9 @@ const ReviewForm = () => {
         </>
     );
 };
+
+ReviewForm.propTypes = {
+    movieId: PropTypes.number.isRequired,
+}
 
 export default ReviewForm;

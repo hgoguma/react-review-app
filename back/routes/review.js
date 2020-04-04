@@ -22,11 +22,11 @@ router.post('/upload', async (req, res, next) => { //로그인한 사용자만 �
     //DB 저장
     try{
         const newReview = await db.Review.create({
-            date : req.body.date,
+            movieId : req.body.movieId,
             title : req.body.title,
             rating : req.body.rating,
             content : req.body.content,
-            UserId : req.user.id,
+            // UserId : req.user.id,
         });
         res.json(newReview);
     } catch(e) {
