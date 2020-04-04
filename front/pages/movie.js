@@ -1,11 +1,15 @@
-import React from 'react';
-import { Row, Col, Card, List, Button } from 'antd';
+import React, { useState, useCallback } from 'react';
+import { Row, Col, Button, List, Avatar, Card } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { LOAD_MOVIE_REQUEST, LOAD_MOVIE_CAST_REQUEST, LOAD_SIMILAR_MOVIE_REQUEST } from '../reducers/movie';
 import styled from 'styled-components';
 import Cast from '../component/Cast';
 import SimliarMovie from '../component/SimilarMovie';
+import ReviewForm from '../component/ReviewForm';
+import ReviewCard from '../component/ReviewCard';
+import { LOAD_REVIEW_REQUEST } from '../reducers/review';
+
 
 
 const Container = styled.div`
@@ -53,6 +57,13 @@ const Review = styled.div`
 const Movie = ({id}) => {
 
     const { data, cast, similar } = useSelector(state => state.movie);
+    const { reviews, hasMoreReviews } =  useSelector(state => state.review);
+
+    const [reviewFormOpen, setReviewFormOpen] = useState(false);
+
+    const onToggleReview = useCallback(() => {
+        setReviewFormOpen(prev => !prev);
+    }, []);
 
     return (
         <Container>
@@ -86,7 +97,26 @@ const Movie = ({id}) => {
             <SimliarMovie similar={similar} />
             <Review>
                 <h2>후기</h2>
-                <Button>후기 작성</Button>
+                <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
+                    <Col xs={24} md={4}></Col>
+                    <Col xs={24} md={16}>
+                    {
+                        reviews && reviews.map((v) => {
+                            return (
+                            <ReviewCard key={v.id} review={v} />
+                            )
+                        })
+                    }
+                    <Button onClick={onToggleReview}>후기 작성</Button>
+                        { reviewFormOpen && 
+                        (
+                            <div>
+                                <ReviewForm />
+                            </div>
+                        )}
+                    </Col>
+                    <Col xs={24} md={4}></Col>                    
+                </Row>
             </Review>
         </Container>
     );
@@ -105,6 +135,11 @@ Movie.getInitialProps = async (context) => {
         type: LOAD_SIMILAR_MOVIE_REQUEST,
         data: context.query.id,
     });
+    context.store.dispatch({
+        type: LOAD_REVIEW_REQUEST,
+    });
+
+
     return { id : parseInt(context.query.id, 10) }
 };
 

@@ -1,9 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
     const Review = sequelize.define('Review', {
-        category : {
-            type : DataTypes.STRING(20),
-            allowNull : false,
-        },
         date : {
             type : DataTypes.STRING(30),
             allowNull : false,

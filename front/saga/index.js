@@ -11,6 +11,6 @@ export default function* rootSaga() {
     yield all([
         fork(user),
         fork(movie),
-        fork(review)
+        fork(review),
     ]);
 }

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.0.5",
     "antd": "^4.0.3",
     "axios": "^0.19.2",
     "cookie-parser": "^1.4.5",

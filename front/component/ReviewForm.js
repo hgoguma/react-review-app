@@ -1,22 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { Input, Form, Button, Select, Rate, DatePicker } from 'antd';
+import { Input, Form, Button, Rate, DatePicker } from 'antd';
 import { UPLOAD_REVIEW_REQUEST } from '../reducers/review';
 
 const ReviewForm = () => {
-    const { Option } = Select;
     const dispatch = useDispatch();
 
-    const [category, setCategory] = useState('');
     const [dateTime, setDateTime] = useState('');
     const [title, setTitle] = useState('');
     const [rating, setRating] = useState(3);
     const [content, setContent] = useState('');
-
-    const onChangeCategory = useCallback((e) => {
-        setCategory(e);
-    }, [category]);
-    
 
     //DatePicker
     const onChangeDateTime = useCallback((date, dateString) => {
@@ -43,26 +36,18 @@ const ReviewForm = () => {
         dispatch({
             type : UPLOAD_REVIEW_REQUEST,
             data : {
-                category : category,
                 date : dateTime,
                 title : title,
                 rating : rating,
                 content : content
             }
         });
-    }, [category, dateTime, title, rating, content]);
+    }, [dateTime, title, rating, content]);
 
     return (
         <>
-        <Form style={{ margin: '10px 10px 20px' }} encType="multipart/form-data" onSubmitCapture={onSubmit} >
+        <Form style={{ margin: '10px 10px 20px' }} onSubmitCapture={onSubmit} >
             <Form.Item required>
-                <Select defaultValue="카테고리" style={{ width: 120 }} onChange={onChangeCategory}>
-                    <Option value="movie" name="movie">영화</Option>
-                    <Option value="drama" name="drama">드라마</Option>
-                    <Option value="musical" name="musical">뮤지컬</Option>
-                    <Option value="play" name="play">연극</Option>
-                    <Option value="concert" name="concert">공연</Option>
-                </Select>
             </Form.Item>
             <Form.Item required>
                 <DatePicker placeholder="날짜" name="dateTime" onChange={onChangeDateTime} />
@@ -80,9 +65,7 @@ const ReviewForm = () => {
                 <Input.TextArea placeholder="내용" name="content" style={{height:'300px'}} value={content} onChange={onChangeContent} />
             </Form.Item>
             <Form.Item>
-                <input type="file" multiple hidden />
-                <Button>이미지 업로드</Button>
-                <Button type="primary" style={{ float: 'right' }} htmlType="submit">기록</Button>
+                <Button type="primary" style={{ textAlign: 'center' }} htmlType="submit">작성</Button>
             </Form.Item>
         </Form>
         </>

@@ -1,10 +1,11 @@
+import produce from 'immer';
 
 export const initialState = {
-    mainPosts: [], // 화면에 보일 포스트들
-    imagePaths: [], // 미리보기 이미지 경로
-    addPostErrorReason: '', // 포스트 업로드 실패 사유
-    isAddingPost: false, // 포스트 업로드 중
-    postAdded: false, // 포스트 업로드 성공
+    reviews: [], // 화면에 보일 포스트들
+    hasMoreReviews : false,
+    addReviewErrorReason: '', // 포스트 업로드 실패 사유
+    isAddingReview: false, // 포스트 업로드 중
+    reviewsAdded: false, // 포스트 업로드 성공
     isAddingComment: false,
     addCommentErrorReason: '',
     commentAdded: false,
@@ -20,62 +21,44 @@ export const LOAD_REVIEW_SUCCESS = 'LOAD_REVIEW_SUCCESS';
 export const LOAD_REVIEW_FAILURE = 'LOAD_REVIEW_FAILURE';
 
 const reducer = (state = initialState, action) => {
-    switch(action.type) {
-        case UPLOAD_REVIEW_REQUEST : {
-            return {
-                ...state,
-                isAddingPost: true,
-                addPostErrorReason: '',
-                postAdded: false,
-            };
-        }
-        case UPLOAD_REVIEW_SUCCESS : {
-            return {
-                ...state,
-                isAddingPost: false,
-                mainPosts: [action.data, ...state.mainPosts],
-                postAdded: true,
-                imagePaths: [],
-            };
-        }
-        case UPLOAD_REVIEW_FAILURE : {
-            return {
-                ...state,
-                isAddingPost: false,
-                addPostErrorReason: action.error,
-            };
-        }
-        case UPLOAD_REVIEW_REQUEST : {
-            return {
-                ...state,
-                isAddingPost: true,
-                addPostErrorReason: '',
-                postAdded: false,
-            };
-        }
-        case UPLOAD_REVIEW_SUCCESS : {
-            return {
-                ...state,
-                isAddingPost: false,
-                mainPosts: [action.data, ...state.mainPosts],
-                postAdded: true,
-                imagePaths: [],
-            };
-        }
-        case UPLOAD_REVIEW_FAILURE : {
-            return {
-                ...state,
-                isAddingPost: false,
-                addPostErrorReason: action.error,
-            };
-        }
-        
-        default : {
-            return {
-                ...state
+    return produce(state, (draft) => {
+
+        switch(action.type) {
+            case UPLOAD_REVIEW_REQUEST : {
+                draft.isAddingReview = true;
+                draft.reviewsAdded = false;
+                draft.addReviewErrorReason = '';
+                break;
+            }
+            case UPLOAD_REVIEW_SUCCESS : {
+                draft.isAddingReview = false;
+                draft.reviewsAdded = true;
+                draft.reviews.unshift(action.data);
+                break;
+            }
+            case UPLOAD_REVIEW_FAILURE : {
+                draft.isAddingReview = false;
+                draft.reviewsAdded = false;
+                draft.addReviewErrorReason = action.error;
+                break;
+            }
+            case LOAD_REVIEW_REQUEST : {
+                break;
+            }
+            case LOAD_REVIEW_SUCCESS : {
+                draft.reviews = action.data;
+                break;
+            }
+            case LOAD_REVIEW_FAILURE : {
+                break;
+            }
+            default : {
+                return {
+                    ...state
+                }
             }
         }
-    }
+    });
 }
 
 export default reducer;
