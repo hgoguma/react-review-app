@@ -63,7 +63,9 @@ const reducer = (state = initialState, action) => {
             case LOAD_MOVIE_CAST_SUCCESS : {
                 draft.isCastLoading = false;
                 draft.isCastLoaded = true;
-                draft.cast = action.data;
+                for(let i = 0; i < 6 ; i++) {
+                    draft.cast.push(action.data.cast[i]);
+                }
                 break;
             }
             case LOAD_MOVIE_CAST_FAILURE : {
@@ -80,7 +82,9 @@ const reducer = (state = initialState, action) => {
             case LOAD_SIMILAR_MOVIE_SUCCESS : {
                 draft.isSimilarLoading = false;
                 draft.isSimilarLoaded = true;
-                draft.similar = action.data;
+                for(let i = 0; i < 6 ; i++) {
+                    draft.similar.push(action.data.results[i]);
+                }
                 break;
             }
             case LOAD_SIMILAR_MOVIE_FAILURE : {
