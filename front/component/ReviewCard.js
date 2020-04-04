@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Avatar, Rate } from 'antd';
 import PropTypes from 'prop-types';
+import { Card, Avatar, Rate } from 'antd';
 import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import styled from 'styled-components';
 
 const ReviewCard = ( { review } ) => {
@@ -15,9 +17,10 @@ const ReviewCard = ( { review } ) => {
             <Card.Meta
             avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
             title={review.title}
-            description={<div> <p>{review.createdAt}</p> 
-            <p><Rate disabled defaultValue={review.rating} /> </p>
-            <p> {review.content} </p> 
+            description={<div> 
+                <p> <Moment date={review.createdAt} format="YYYY-MM-DD"> </Moment></p> 
+                <p><Rate disabled defaultValue={ parseInt(review.rating) } /> </p>
+                <p> {review.content} </p> 
             </div> }
             />
         </Card>

@@ -73,8 +73,4 @@ const ReviewForm = () => {
     );
 };
 
-ReviewForm.propTypes = {
-    movieId: PropTypes.number.isRequired,
-}
-
 export default ReviewForm;

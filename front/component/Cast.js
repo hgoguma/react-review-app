@@ -41,7 +41,9 @@ const Cast = ( {cast} ) => {
 };
 
 Cast.propTypes = {
-    cast: PropTypes.object.isRequired,
+    cast: PropTypes.shape({
+        cast: PropTypes.object,
+    }).isRequired,
 }
 
 export default Cast;
