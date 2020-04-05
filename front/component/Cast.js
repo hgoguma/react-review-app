@@ -23,8 +23,9 @@ const Cast = ( {cast} ) => {
                         <List.Item key={item.id}>
                             <Card
                                 hoverable
-                                style={{ width: 150, margin:'20px'}}
-                                cover={<img alt={item.name} src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`} />}
+                                style={{ width: '200px', margin:'20px'}}
+                                cover={<img alt={item.name} src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
+                                        style={{ width: '100%', height: '100%' }} />}
                             >
                                 <Card.Meta 
                                     style={{ textAlign:'center'}}

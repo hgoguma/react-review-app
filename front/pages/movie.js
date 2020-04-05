@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Row, Col, Button, List, Avatar, Card } from 'antd';
+import { Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { LOAD_MOVIE_REQUEST, LOAD_MOVIE_CAST_REQUEST, LOAD_SIMILAR_MOVIE_REQUEST } from '../reducers/movie';
@@ -9,7 +9,7 @@ import SimliarMovie from '../component/SimilarMovie';
 import ReviewForm from '../component/ReviewForm';
 import ReviewCard from '../component/ReviewCard';
 import { LOAD_REVIEW_REQUEST } from '../reducers/review';
-
+import { HeartFilled } from '@ant-design/icons';
 
 
 const Container = styled.div`
@@ -23,13 +23,14 @@ const Background = styled.div`
     &::after {
         position: absolute;
         content: '';
-        background-image: url(https://image.tmdb.org/t/p/original${props => props.path});
+        background-image: url(https://image.tmdb.org/t/p/original${props => props.path}),
+            linear-gradient(to right, rgba(2.75%, 6.67%, 10.20%, 1.00) 150px, rgba(14.12%, 20.78%, 27.06%, 0.84) 100%);
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
         width: 100%;
         height: 100%;
-        opacity: 0.6;
+        opacity: 0.5;
         top: 0;
         bottom: 0;
         z-index: -1;
@@ -42,14 +43,18 @@ const Background = styled.div`
     }
 `;
 
+const MovieInfo = styled.div`
+    margin-top: 50px;
 
+    & section h1 {
+    }
+`;
 const Review = styled.div`
     margin: 50px;
 
     & h2 {
         margin-left: 50px;
     }
-
 `;
 
 
@@ -70,26 +75,25 @@ const Movie = ({id}) => {
             <Background path={data.backdrop_path}>
                 <Row gutter={{ xs: 8, sm: 16, md: 24}}>
                     <Col xs={24} md={8}>
-                        <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt={data.title}
-                        />
+                        <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt={data.title} />
                     </Col>
                     <Col xs={24} md={12}>
-                        <div style={{marginTop:'50px'}}>
+                        <MovieInfo>
                             <section>
-                                <h1>{data.title}</h1>
+                                <h1><b>{data.title}&nbsp;&nbsp;</b><Button shape="circle" icon={ <HeartFilled /> } /></h1>
                                 <p> 장르 : 
                                     { data.genres && data.genres.map((v) => {
-                                    return ( <span>{v.name} || </span> )  
+                                    return ( <span>{v.name}, </span> )  
                                 })}
                                 </p>
                                 <span>{data.release_date}</span>
                                 <span>평점 : {data.vote_average}</span>
                                 <p>{data.tagline}</p>
                                 <p>{data.overview}</p>
-                                <p><a>공식 홈페이지 {data.homepage}</a></p>
+                                <p><a style={{color: 'black'}}>공식 홈페이지 {data.homepage}</a></p>
                                 <p>러닝 타임 : {data.runtime}</p>
                             </section>
-                        </div>
+                        </MovieInfo>
                     </Col>
                 </Row>
             </Background>

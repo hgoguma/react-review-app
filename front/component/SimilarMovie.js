@@ -23,7 +23,7 @@ const SimliarMovie = ( {similar} ) => {
                             <List.Item key={item.id}>
                                 <Card
                                     hoverable
-                                    style={{ width: '150px', margin:'20px'}}
+                                    style={{ width: '200px', margin:'20px'}}
                                     cover={<img alt={item.title} src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} 
                                             style={{ width: '100%', height: '100%' }} />}
                                 >
